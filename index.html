@@ -11,7 +11,15 @@
   <div class="heart-field" aria-hidden="true"></div>
 
   <div class="password-card fade-in">
-    <h2><span class="heart-beat">💗</span> Virtual Gift Idea 💌</h2>
+    <div class="top-row">
+      <h2><span class="heart-beat">💗</span> Virtual Gift Idea 💌</h2>
+      <div class="audio-control">
+        <audio id="bg-music" loop>
+          <source src="music.mp3" type="audio/mpeg">
+        </audio>
+        <button id="music-toggle" aria-pressed="false" aria-label="Play background music">▶️</button>
+      </div>
+    </div>
 
     <div class="photo">
       <img src="couple.jpg" alt="us" />
@@ -38,10 +46,77 @@
     <p class="credit">made with love 💕</p>
   </div>
 
+  <!-- Modal (inline love content) -->
+  <div id="loveModal" class="modal hidden" aria-hidden="true">
+    <div class="modal-card card" role="dialog" aria-modal="true" aria-labelledby="loveTitle">
+      <button class="modal-close" aria-label="Close">✕</button>
+      <h2 id="loveTitle">Happy birthday! <svg class="heart-beat" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path fill="#ff69b4" d="M12 21s-7-4.35-9.2-6.3C0.9 12.8 1.6 9.3 4.2 7.5 6.4 5.9 9.2 6.3 11 8c1.8-1.7 4.6-2.1 6.8-.5 2.6 1.8 3.3 5.3 1.4 7.9C19 16.65 12 21 12 21z"/></svg></h2>
+      <div class="birthday-text">
+        <h3>Hi, babe!</h3>
+        <p>Wishing you a day filled with love, joy, and all the things that make you happiest 💕</p>
+      </div>
+
+      <video id="loveVideo" controls muted loop>
+        <source src="couple.mp4" type="video/mp4">
+      </video>
+
+      <div class="nav-bar">
+        <button class="nav-btn" data-target="profile">👤 Profile</button>
+        <button class="nav-btn" data-target="twentysix">📸 Twenty Six</button>
+        <button class="nav-btn" data-target="readme">📖 Read Me</button>
+      </div>
+
+      <div id="content-area">
+        <!-- Profile Section -->
+        <div class="section hidden" id="profile">
+          <img src="profile.jpg" alt="Profile Picture">
+          <div class="text-part">
+            <h3>A little about u 💕</h3>
+            <p>You are the youngest one, a boy who’s very charming (just kidding 😜).
+You always take care of your parents and are so responsible.
+You always give your best in everything you do.
+To me, you are kind, funny, and the most handsome person in the world! ❤️</p>
+          </div>
+        </div>
+
+        <!-- Twenty Six Section -->
+        <div class="section hidden" id="twentysix">
+          <h3>💞 Twenty Six Memories 💞</h3>
+          <div class="lomo-gallery">
+            <div class="polaroid"><img src="lomo1.jpg" alt="Lomo Card 1"></div>
+            <div class="polaroid"><img src="lomo2.jpg" alt="Lomo Card 2"></div>
+            <div class="polaroid"><img src="lomo3.jpg" alt="Lomo Card 3"></div>
+          </div>
+        </div>
+
+        <!-- Read Me Section -->
+        <div class="section hidden" id="readme">
+          <img src="readme.jpg" alt="Read Me Picture">
+          <div class="text-part">
+            <h3 class="typewriter">📖 Read Me</h3>
+            <p>Every time you visit here, remember I love you no matter what happens. You're my safe place 💌</p>
+            <p>I love every part of you, even your flaws.
+                You always make me smile and fill my days with laughter.
+                I can’t imagine my life without you.
+                Thank you for coming into my world and for all the love you’ve given me.
+                I hope to celebrate every birthday, and share every precious moment with you, from now until forever💕 </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox overlay -->
+  <div id="lightbox" class="lightbox hidden" aria-hidden="true">
+    <button class="lightbox-close" aria-label="Close">✕</button>
+    <img src="" alt="" id="lightbox-img">
+  </div>
+
   <!-- confetti lib (lightweight CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <script>
+    // --- Basic elements ---
     const display = document.getElementById("display");
     const keys = document.querySelectorAll(".key");
     const clear = document.getElementById("clear");
@@ -57,8 +132,6 @@
           display.value += key.textContent;
         }
       });
-
-      // make keys keyboard-focusable and show focus outline
       key.tabIndex = 0;
     });
 
@@ -67,27 +140,74 @@
       errorMsg.textContent = "";
     });
 
-    function celebrateAndGo(url) {
-      if (prefersReduced) {
-        window.location.href = url;
-        return;
+    // --- Audio control (user toggled) ---
+    const music = document.getElementById('bg-music');
+    const musicToggle = document.getElementById('music-toggle');
+    musicToggle.addEventListener('click', () => {
+      if (music.paused) {
+        music.play();
+        musicToggle.textContent = '⏸️';
+        musicToggle.setAttribute('aria-pressed', 'true');
+      } else {
+        music.pause();
+        musicToggle.textContent = '▶️';
+        musicToggle.setAttribute('aria-pressed', 'false');
       }
+    });
 
-      // confetti burst
+    // --- Modal logic ---
+    const modal = document.getElementById('loveModal');
+    const modalClose = modal.querySelector('.modal-close');
+
+    function showModal(){
+      modal.classList.remove('hidden');
+      modal.setAttribute('aria-hidden','false');
+      // focus management
+      modalClose.focus();
+      // pause background audio if playing to keep focus on modal video
+      if (!music.paused) music.pause();
+    }
+
+    function hideModal(){
+      modal.classList.add('hidden');
+      modal.setAttribute('aria-hidden','true');
+      // return focus
+      document.querySelector('.password-card .key')?.focus();
+    }
+
+    modalClose.addEventListener('click', hideModal);
+    modal.addEventListener('click', (e)=>{ if(e.target === modal) hideModal(); });
+    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && !modal.classList.contains('hidden')) hideModal(); });
+
+    // --- lightbox ---
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxClose = lightbox.querySelector('.lightbox-close');
+    document.querySelectorAll('.lomo-gallery img').forEach(img => {
+      img.addEventListener('click', ()=>{
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt || '';
+        lightbox.classList.remove('hidden');
+        lightbox.setAttribute('aria-hidden','false');
+      });
+    });
+    lightboxClose.addEventListener('click', ()=>{ lightbox.classList.add('hidden'); lightbox.setAttribute('aria-hidden','true'); });
+    lightbox.addEventListener('click', (e)=>{ if(e.target === lightbox) { lightbox.classList.add('hidden'); lightbox.setAttribute('aria-hidden','true'); } });
+
+    // --- Celebration now shows modal instead of redirect ---
+    function celebrateAndShow(){
+      if (prefersReduced) { showModal(); return; }
       if (window.confetti) {
         confetti({ particleCount: 90, spread: 70, origin: { y: 0.6 }, colors: ['#ff8ec7','#ff69b4','#ffd6ec', '#fff2f9'] });
         setTimeout(()=> confetti({ particleCount: 50, spread: 100, origin: { y: 0.85 }}), 200);
       }
-
-      card.classList.add('fade-out');
-      setTimeout(() => {
-        window.location.href = url;
-      }, 900);
+      // small delay so confetti visible
+      setTimeout(() => showModal(), 600);
     }
 
     enter.addEventListener("click", () => {
       if (display.value === "1030") {
-        celebrateAndGo('love.html');
+        celebrateAndShow();
       } else {
         errorMsg.textContent = "Wrong password 💔";
         display.value = "";
