@@ -4,27 +4,312 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Our Little Space 💗</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Great+Vibes&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* ===== Base Layout ===== */
+    body {
+      background: linear-gradient(135deg, #ffd6ec 0%, #ffeaf5 50%, #e8f5e9 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Poppins", -apple-system, BlinkMacSystemFont, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    /* ===== Main Card Container ===== */
+    .card {
+      background: linear-gradient(to bottom, #ffe0f0 0%, #fff5fa 100%);
+      padding: 40px 30px;
+      border-radius: 30px;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(255, 126, 175, 0.3);
+      animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== Title ===== */
+    .card > h2 {
+      color: #ff69b4;
+      margin: 0 0 15px 0;
+      font-size: 24px;
+      font-weight: 600;
+      font-family: 'Times New Roman', Times, serif;
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 4px rgba(255, 105, 180, 0.2);
+    }
+
+    /* ===== Birthday Greeting ===== */
+    .birthday-text {
+      background: rgba(255, 182, 193, 0.3);
+      padding: 15px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    .birthday-text h3 {
+      color: #ff1493;
+      margin: 0 0 8px 0;
+      font-size: 20px;
+      font-family: 'Times New Roman', Times, serif;
+    }
+
+    .birthday-text p {
+      color: #666;
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ===== Video Section ===== */
+#loveVideo {
+      width: 30%;
+      height: auto;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      background: #000;
+    }
+
+    /* ===== Navigation Bar ===== */
+    .nav-bar {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      background: linear-gradient(135deg, #ff8ec7 0%, #ffb3d9 100%);
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 142, 199, 0.4);
+      font-family: inherit;
+    }
+
+    .nav-btn:hover {
+      background: linear-gradient(135deg, #ff69b4 0%, #ff8ec7 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 105, 180, 0.5);
+    }
+
+    .nav-btn:active {
+      transform: translateY(0);
+    }
+
+    .nav-btn.active {
+      background: linear-gradient(135deg, #ff1493 0%, #ff69b4 100%);
+      box-shadow: 0 6px 20px rgba(255, 20, 147, 0.5);
+    }
+
+    /* ===== Content Area ===== */
+    #content-area {
+      min-height: 0;
+      margin-top: 0;
+    }
+
+    .section {
+      animation: slideIn 0.5s ease;
+      margin-top: 20px;
+    }
+
+    .section.hidden {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      height: 0 !important;
+      overflow: hidden !important;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* ===== Profile Layout ===== */
+    #profile {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      background: rgba(255, 255, 255, 0.6);
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    #profile img {
+      width: 150px;
+      height: 200px;
+      border-radius: 15px;
+      object-fit: cover;
+      border: 3px solid white;
+      box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
+      flex-shrink: 0;
+    }
+
+    #profile .text-part {
+      text-align: left;
+      flex: 1;
+    }
+
+    #profile .text-part h3 {
+      color: #ff69b4;
+      margin: 0 0 12px 0;
+      font-size: 18px;
+    }
+
+    #profile .text-part p {
+      color: #555;
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    /* ===== Twenty Six Gallery ===== */
+    #twentysix {
+      text-align: center;
+    }
+
+    #twentysix h3 {
+      color: #ff69b4;
+      margin: 0 0 20px 0;
+      font-size: 20px;
+    }
+
+    .lomo-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 15px;
+    }
+
+    .lomo-gallery img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 3px solid white;
+    }
+
+    .lomo-gallery img:hover {
+      transform: translateY(-5px) rotate(2deg);
+      box-shadow: 0 12px 30px rgba(255, 105, 180, 0.4);
+    }
+
+    /* ===== Read Me Layout ===== */
+    #readme {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      text-align: left;
+      background: rgba(255, 255, 255, 0.6);
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    #readme img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #ffd6ec;
+      box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
+      flex-shrink: 0;
+    }
+
+    #readme .text-part h3 {
+      color: #ff69b4;
+      margin: 0 0 10px 0;
+      font-size: 18px;
+    }
+
+    #readme .text-part p {
+      color: #555;
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ===== Footer Credit ===== */
+    .credit {
+      margin-top: 25px;
+      font-size: 12px;
+      color: #999;
+      font-style: italic;
+    }
+
+    /* ===== Mobile Responsiveness ===== */
+    @media (max-width: 480px) {
+      .card {
+        padding: 30px 20px;
+      }
+
+      #profile {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      #profile .text-part {
+        text-align: center;
+      }
+
+      #profile img {
+        width: 120px;
+        height: 160px;
+        margin: 0 auto;
+      }
+
+      #readme {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      #readme img {
+        width: 80px;
+        height: 80px;
+      }
+
+      .lomo-gallery {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-btn {
+        padding: 10px 20px;
+        font-size: 13px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="heart-field" aria-hidden="true"></div>
+  <audio id="bg-music" autoplay loop>
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
 
   <div class="card">
-    <div class="audio-control">
-      <audio id="bg-music" loop>
-        <source src="music.mp3" type="audio/mpeg">
-      </audio>
-      <button id="music-toggle" aria-pressed="false" aria-label="Play background music">▶️</button>
-    </div>
-    <h2>Happy birthday! <svg class="heart-beat" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path fill="#ff69b4" d="M12 21s-7-4.35-9.2-6.3C0.9 12.8 1.6 9.3 4.2 7.5 6.4 5.9 9.2 6.3 11 8c1.8-1.7 4.6-2.1 6.8-.5 2.6 1.8 3.3 5.3 1.4 7.9C19 16.65 12 21 12 21z"/></svg></h2>
+    <h2>Happy birthday! 💗</h2>
 
     <div class="birthday-text">
       <h3>Hi, babe!</h3>
       <p>Wishing you a day filled with love, joy, and all the things that make you happiest 💕</p>
     </div>
 
-    <video id="loveVideo" controls muted loop>
+    <video id="loveVideo" controls autoplay muted loop>
       <source src="couple.mp4" type="video/mp4">
     </video>
 
@@ -35,54 +320,71 @@
     </div>
 
     <div id="content-area">
+      <!-- Profile Section -->
       <div class="section hidden" id="profile">
         <img src="profile.jpg" alt="Profile Picture">
         <div class="text-part">
           <h3>A little about u 💕</h3>
-          <p>...content...</p>
+          <p>You are the youngest one, a boy who’s very charming (just kidding 😜).
+You always take care of your parents and are so responsible.
+You always give your best in everything you do.
+To me, you are kind, funny, and the most handsome person in the world! ❤️”</p>
         </div>
       </div>
 
+      <!-- Twenty Six Section -->
       <div class="section hidden" id="twentysix">
         <h3>💞 Twenty Six Memories 💞</h3>
         <div class="lomo-gallery">
-          <div class="polaroid"><img src="lomo1.jpg" alt="Lomo Card 1"></div>
-          <div class="polaroid"><img src="lomo2.jpg" alt="Lomo Card 2"></div>
-          <div class="polaroid"><img src="lomo3.jpg" alt="Lomo Card 3"></div>
+          <img src="lomo1.jpg" alt="Lomo Card 1">
+          <img src="lomo2.jpg" alt="Lomo Card 2">
+          <img src="lomo3.jpg" alt="Lomo Card 3">
         </div>
       </div>
 
+      <!-- Read Me Section -->
       <div class="section hidden" id="readme">
         <img src="readme.jpg" alt="Read Me Picture">
         <div class="text-part">
-          <h3 class="typewriter">📖 Read Me</h3>
-          <p>...content...</p>
+          <h3>📖 Read Me</h3>
+          <p>Every time you visit here, remember I love you no matter what happens. You're my safe place 💌</p>
+          <p>I love every part of you, even your flaws.
+              You always make me smile and fill my days with laughter.
+              I can’t imagine my life without you.
+              Thank you for coming into my world and for all the love you’ve given me.
+              I hope to celebrate every birthday, and share every precious moment with you, from now until forever💕 </p>
         </div>
       </div>
     </div>
-  </div>
 
-  <div id="lightbox" class="lightbox hidden" aria-hidden="true">
-    <button class="lightbox-close" aria-label="Close">✕</button>
-    <img src="" alt="" id="lightbox-img">
+    
   </div>
 
   <script>
-    // Audio control
-    const music = document.getElementById('bg-music');
-    const musicToggle = document.getElementById('music-toggle');
-    musicToggle.addEventListener('click', () => {
-      if (music.paused) { music.play(); musicToggle.textContent='⏸️'; musicToggle.setAttribute('aria-pressed','true'); }
-      else { music.pause(); musicToggle.textContent='▶️'; musicToggle.setAttribute('aria-pressed','false'); }
-    });
+    // Make sure all sections are hidden on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const buttons = document.querySelectorAll(".nav-btn");
+      const sections = document.querySelectorAll(".section");
 
-    // Lightbox
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.getElementById('lightbox-img');
-    document.querySelectorAll('.lomo-gallery img').forEach(img => {
-      img.addEventListener('click', ()=>{ lightboxImg.src = img.src; lightboxImg.alt = img.alt||''; lightbox.classList.remove('hidden'); lightbox.setAttribute('aria-hidden','false'); });
+      // Ensure all sections start hidden
+      sections.forEach(sec => sec.classList.add("hidden"));
+
+      buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          // Remove active class from all buttons
+          buttons.forEach(b => b.classList.remove("active"));
+          
+          // Add active class to clicked button
+          btn.classList.add("active");
+          
+          // Hide all sections
+          sections.forEach(sec => sec.classList.add("hidden"));
+          
+          // Show target section
+          document.getElementById(btn.dataset.target).classList.remove("hidden");
+        });
+      });
     });
-    document.querySelector('.lightbox-close').addEventListener('click', ()=>{ lightbox.classList.add('hidden'); lightbox.setAttribute('aria-hidden','true'); });
   </script>
 </body>
 </html>
